@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     let totalQuestions = qAndASet.count //Total number of questions
     var correctAnswers = 0 //Keeps track of correct answers
     var currentQuestion = qAndASet[0] //Keeps track of the current question
+    var currentGame = 0 //Keeps track of which game it is so that timers set in past rounds don't interfere
     
     //Array used to track what questions remain unasked...
     //by storing the index of their position in the qAndASet array.
@@ -36,6 +37,7 @@ class ViewController: UIViewController {
     let disabledButtonTextColor: UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.4)
     
     // Outlets
+    //Buttons and labels
     @IBOutlet weak var questionField: UILabel!
     @IBOutlet weak var resultField: UILabel!
     @IBOutlet weak var answerOneButton: UIButton!
@@ -43,6 +45,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var answerThreeButton: UIButton!
     @IBOutlet weak var answerFourButton: UIButton!
     @IBOutlet weak var progressButton: UIButton!
+    
+    //Lighting mode components
+    @IBOutlet weak var lightningModeSwitchTitle: UILabel!
+    @IBOutlet weak var lightningModeSwitchSubtitle: UILabel!
+    @IBOutlet weak var lightningModeSwitchToggle: UISwitch!
+    var isLightningModeOn = true //tracks whether lighting mode is on. Defaults to true
+    @IBOutlet weak var countDownLabel: UILabel! //count down timer label for lightning mode
+    let timeLimit = 15 //lightning mode time limit
     
     //Check box images to indicate correct answer
     @IBOutlet weak var checkAnswerButtonOne: UIImageView!
@@ -54,19 +64,38 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Round all buttons
+        //Load game sounds
+        loadGameSounds()
+        
+        //Set the button style to rounded for the whole game
+        roundAllButtons()
+        
+        //Set up the landing page
+        setUpLandingPage()
+    }
+    
+    //HELPERS
+    
+    //Round all the buttons
+    func roundAllButtons(){
         let allButtons: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton, progressButton]
         for button in allButtons {
             button.layer.cornerRadius = 8.0
         }
-        
-        //Start the quiz by showing the first question and playing a sound
-        loadGameSounds()
-        gameStartSound.playGameSound()
-        displayQuestion()
     }
     
-    //HELPERS
+    //Set up the landing page of the app. Users only see this once when opening.
+    func setUpLandingPage(){
+        gameLoadSound.playGameSound()
+        questionField.isHidden = true
+        resultField.text = "Welcome to Quizzical!"
+        resultField.isHidden = false
+        showLightningModeToggle(isAvailable: true)
+        hideAllAnswerButtons()
+        hideAllCheckMarks()
+        progressButton.setTitle("Begin Game",for: UIControl.State())
+        countDownLabel.isHidden = true
+    }
     
     //Load game sounds
     func loadGameSounds() {
@@ -75,6 +104,39 @@ class ViewController: UIViewController {
             let soundUrl = URL(fileURLWithPath: path!)
             AudioServicesCreateSystemSoundID(soundUrl as CFURL, &gameSound.systemSoundID)
         }
+    }
+    
+    //Show or hide lightning mode toggle
+    func showLightningModeToggle(isAvailable: Bool) {
+        if isAvailable == true {
+            lightningModeSwitchTitle.isHidden = false
+            lightningModeSwitchSubtitle.isHidden = false
+            lightningModeSwitchToggle.isHidden = false
+            lightningModeSwitchToggle.isEnabled = true
+        } else {
+            lightningModeSwitchTitle.isHidden = true
+            lightningModeSwitchSubtitle.isHidden = true
+            lightningModeSwitchToggle.isHidden = true
+            lightningModeSwitchToggle.isEnabled = false
+        }
+    }
+    
+    //Start a new game
+    func startNewGame(){
+        currentGame += 1
+        //Hide the lightning mode switch
+        showLightningModeToggle(isAvailable: false)
+        //Play the start game sound
+        gameStartSound.playGameSound()
+        //Reset number of correct answers
+        correctAnswers = 0
+        //Update progress button title
+        progressButton.setTitle("Next Question", for: UIControl.State())
+        //Show question field and hide results field
+        questionField.isHidden = false
+        resultField.isHidden = true
+        //Show the question and options
+        displayQuestion()
     }
     
     //Show a question
@@ -103,24 +165,30 @@ class ViewController: UIViewController {
             answerFourButton.isHidden = true
         }
         
-        //Start a countdown timer that gives you 15 seconds to answer a question
-        setupTimer(delay: 15)
+        //If in lightning mode, start a countdown timer that gives you 15 seconds to answer a question
+        if isLightningModeOn == true {
+            setupCountDownTimer()
+        }
     }
     
     //Sets up a timer
-    func setupTimer(delay seconds: Int){
-        // Converts a delay in seconds to nanoseconds as signed 64 bit integer
-        let delay = Int64(NSEC_PER_SEC * UInt64(seconds))
+    func setupCountDownTimer(){
+        let originalQuestion = self.currentQuestion
+        let originalGame = self.currentGame
+        
+        // Converts a onesecond delay to nanoseconds as signed 64 bit integer
+        let delay = Int64(NSEC_PER_SEC * UInt64(timeLimit))
         // Calculates a time value to execute the method given current time and delay
+        
         let dispatchTime = DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
         
-        let originalQuestion = self.currentQuestion
+        
         // progresses the game at the dispatch time on the main queue
         DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
             //Only execute the timer if on the same unanswered question when the time's up
-            if originalQuestion.question == self.currentQuestion.question && self.resultField.isHidden == true {
+            if originalQuestion.question == self.currentQuestion.question && self.resultField.isHidden == true && originalGame == self.currentGame {
                 if self.unaskedQuestionIndices.count == 0 {
-                    //game over
+                    //Game over
                     self.displayScore()
                 } else {
                     //Ran out of time but game continues.
@@ -255,6 +323,9 @@ class ViewController: UIViewController {
             resultField.text = "\(correctAnswers) of \(totalQuestions) correct."
             resultField.textColor = wrongColor
         }
+        
+        //Show lighting mode switch
+        showLightningModeToggle(isAvailable: true)
     }
     
     //ACTIONS
@@ -283,18 +354,20 @@ class ViewController: UIViewController {
         } else {
         //Show next question
             if questionsRemaining == totalQuestions {
-            //Game is about to begin.
-                //Play game start sound
-                gameStartSound.playGameSound()
-                //Set progress button title.
-                progressButton.setTitle("Next Question", for: UIControl.State())
-                //Reset number of correct answers 
-                correctAnswers = 0
+            //Start a new game
+                startNewGame()
             }
             displayQuestion()
         }
     }
-
+    
+    @IBAction func lightningModeToggled() {
+        //Switches the state of the switch and whether lightning mode is on
+        isLightningModeOn = !isLightningModeOn
+        lightningModeSwitchToggle.isOn = isLightningModeOn
+    }
+    
+    
 }
 
 

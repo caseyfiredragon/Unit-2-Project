@@ -9,6 +9,7 @@
 import AudioToolbox
 
 //Declare properties of custom type GameSound
+let gameLoadSound = GameSound(fileName: "GameLoadSound")
 let gameStartSound = GameSound(fileName: "GameStartSound")
 let gameEndSound = GameSound(fileName: "GameEndSound")
 let timesUpSound = GameSound(fileName: "TimesUpSound")
@@ -16,7 +17,7 @@ let incorrectAnswerSound = GameSound(fileName: "IncorrectAnswerSound")
 let correctAnswerSound = GameSound(fileName: "CorrectAnswerSound")
 
 //Organize all the sounds in an array
-let gameSounds: [GameSound] = [gameStartSound,gameEndSound,timesUpSound,incorrectAnswerSound,correctAnswerSound]
+let gameSounds: [GameSound] = [gameLoadSound,gameStartSound,gameEndSound,timesUpSound,incorrectAnswerSound,correctAnswerSound]
 
 //Custom type created to hold related values and functions for game sounds
 class GameSound {

@@ -13,6 +13,7 @@
 		503C2B9E2273640F00A72105 /* IncorrectAnswerSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 503C2B9322725D8500A72105 /* IncorrectAnswerSound.m4a */; };
 		503C2B9F2273640F00A72105 /* CorrectAnswerSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 503C2B9522725D8500A72105 /* CorrectAnswerSound.m4a */; };
 		503C2BA1227366C400A72105 /* GameStartSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 503C2BA0227366A100A72105 /* GameStartSound.m4a */; };
+		5073E60722738E0700685666 /* GameLoadSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5073E60622738E0000685666 /* GameLoadSound.m4a */; };
 		509C9317226CA77200213908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509C9316226CA77200213908 /* AppDelegate.swift */; };
 		509C9319226CA77200213908 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509C9318226CA77200213908 /* ViewController.swift */; };
 		509C931C226CA77300213908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 509C931A226CA77300213908 /* Main.storyboard */; };
@@ -28,6 +29,7 @@
 		503C2B9622725D8500A72105 /* TimesUpSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = TimesUpSound.m4a; sourceTree = "<group>"; };
 		503C2B99227260FF00A72105 /* SoundProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundProvider.swift; sourceTree = "<group>"; };
 		503C2BA0227366A100A72105 /* GameStartSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = GameStartSound.m4a; sourceTree = "<group>"; };
+		5073E60622738E0000685666 /* GameLoadSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = GameLoadSound.m4a; sourceTree = "<group>"; };
 		509C9313226CA77200213908 /* Quizzical.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quizzical.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		509C9316226CA77200213908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		509C9318226CA77200213908 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				503C2B9622725D8500A72105 /* TimesUpSound.m4a */,
 				503C2B9322725D8500A72105 /* IncorrectAnswerSound.m4a */,
 				503C2B9522725D8500A72105 /* CorrectAnswerSound.m4a */,
+				5073E60622738E0000685666 /* GameLoadSound.m4a */,
 			);
 			path = Quizzical;
 			sourceTree = "<group>";
@@ -159,6 +162,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5073E60722738E0700685666 /* GameLoadSound.m4a in Resources */,
 				503C2BA1227366C400A72105 /* GameStartSound.m4a in Resources */,
 				503C2B9C2273640F00A72105 /* GameEndSound.m4a in Resources */,
 				503C2B9D2273640F00A72105 /* TimesUpSound.m4a in Resources */,
