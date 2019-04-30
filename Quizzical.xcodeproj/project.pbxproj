@@ -14,6 +14,8 @@
 		503C2B9F2273640F00A72105 /* CorrectAnswerSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 503C2B9522725D8500A72105 /* CorrectAnswerSound.m4a */; };
 		503C2BA1227366C400A72105 /* GameStartSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 503C2BA0227366A100A72105 /* GameStartSound.m4a */; };
 		5073E60722738E0700685666 /* GameLoadSound.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 5073E60622738E0000685666 /* GameLoadSound.m4a */; };
+		5073E60922774B8200685666 /* QuizManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5073E60822774B8200685666 /* QuizManager.swift */; };
+		5073E60B22775E5A00685666 /* StyleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5073E60A22775E5A00685666 /* StyleManager.swift */; };
 		509C9317226CA77200213908 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509C9316226CA77200213908 /* AppDelegate.swift */; };
 		509C9319226CA77200213908 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 509C9318226CA77200213908 /* ViewController.swift */; };
 		509C931C226CA77300213908 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 509C931A226CA77300213908 /* Main.storyboard */; };
@@ -30,6 +32,8 @@
 		503C2B99227260FF00A72105 /* SoundProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundProvider.swift; sourceTree = "<group>"; };
 		503C2BA0227366A100A72105 /* GameStartSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = GameStartSound.m4a; sourceTree = "<group>"; };
 		5073E60622738E0000685666 /* GameLoadSound.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = GameLoadSound.m4a; sourceTree = "<group>"; };
+		5073E60822774B8200685666 /* QuizManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizManager.swift; sourceTree = "<group>"; };
+		5073E60A22775E5A00685666 /* StyleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleManager.swift; sourceTree = "<group>"; };
 		509C9313226CA77200213908 /* Quizzical.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quizzical.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		509C9316226CA77200213908 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		509C9318226CA77200213908 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,10 +41,6 @@
 		509C931D226CA77700213908 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		509C9320226CA77700213908 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		509C9322226CA77700213908 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		509C9329226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOS-Techdegree-Enhance-a-Quiz-App-assets-04.png"; sourceTree = "<group>"; };
-		509C932A226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOS-Techdegree-Enhance-a-Quiz-App-assets-01.png"; sourceTree = "<group>"; };
-		509C932B226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOS-Techdegree-Enhance-a-Quiz-App-assets-02.png"; sourceTree = "<group>"; };
-		509C932C226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iOS-Techdegree-Enhance-a-Quiz-App-assets-03.png"; sourceTree = "<group>"; };
 		509C932D226CBAAC00213908 /* QAndAProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QAndAProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +58,6 @@
 		509C930A226CA77200213908 = {
 			isa = PBXGroup;
 			children = (
-				509C9328226CA7F900213908 /* QuizMockups */,
 				509C9315226CA77200213908 /* Quizzical */,
 				509C9314226CA77200213908 /* Products */,
 			);
@@ -79,6 +78,8 @@
 				509C9318226CA77200213908 /* ViewController.swift */,
 				509C931A226CA77300213908 /* Main.storyboard */,
 				509C932D226CBAAC00213908 /* QAndAProvider.swift */,
+				5073E60822774B8200685666 /* QuizManager.swift */,
+				5073E60A22775E5A00685666 /* StyleManager.swift */,
 				503C2B99227260FF00A72105 /* SoundProvider.swift */,
 				509C931D226CA77700213908 /* Assets.xcassets */,
 				509C931F226CA77700213908 /* LaunchScreen.storyboard */,
@@ -91,17 +92,6 @@
 				5073E60622738E0000685666 /* GameLoadSound.m4a */,
 			);
 			path = Quizzical;
-			sourceTree = "<group>";
-		};
-		509C9328226CA7F900213908 /* QuizMockups */ = {
-			isa = PBXGroup;
-			children = (
-				509C9329226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-04.png */,
-				509C932A226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-01.png */,
-				509C932B226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-02.png */,
-				509C932C226CA7F900213908 /* iOS-Techdegree-Enhance-a-Quiz-App-assets-03.png */,
-			);
-			path = QuizMockups;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,8 +173,10 @@
 			files = (
 				509C932E226CBAAC00213908 /* QAndAProvider.swift in Sources */,
 				509C9319226CA77200213908 /* ViewController.swift in Sources */,
+				5073E60922774B8200685666 /* QuizManager.swift in Sources */,
 				503C2B9A227260FF00A72105 /* SoundProvider.swift in Sources */,
 				509C9317226CA77200213908 /* AppDelegate.swift in Sources */,
+				5073E60B22775E5A00685666 /* StyleManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

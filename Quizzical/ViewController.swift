@@ -7,36 +7,15 @@
 //
 
 import UIKit
-import GameKit
+import GameKit //TODO: Might not need this
 import AudioToolbox
 
 class ViewController: UIViewController {
 
-    //Properties
+    //MARK: - Properties
+    var isLightningModeOn = true //tracks whether lighting mode is on. Defaults to true
     
-    //Game sounds and functions in the SoundProvier file
-    
-    let totalQuestions = qAndASet.count //Total number of questions
-    var correctAnswers = 0 //Keeps track of correct answers
-    var currentQuestion = qAndASet[0] //Keeps track of the current question
-    var currentGame = 0 //Keeps track of which game it is so that timers set in past rounds don't interfere
-    
-    //Array used to track what questions remain unasked...
-    //by storing the index of their position in the qAndASet array.
-    //Index values are removed from this array when a question is asked.
-    var unaskedQuestionIndices = Array(0...(qAndASet.count - 1))
-    
-    //Colors for result text field when right or wrong answer selected
-    let correctColor = UIColor(red: 65.0/255, green: 145.0/255, blue: 135.0/255, alpha: 1.0)
-    let wrongColor = UIColor(red: 242.0/255, green: 166.0/255, blue: 110.0/255, alpha: 1.0)
-    
-    //Enabled/Disabled Button Color Settings
-    let enabledButtonBackgroundColor: UIColor = UIColor(red: 54/255.0, green: 119/255.0, blue: 147/255.0, alpha: 1.0)
-    let disabledButtonBackgroundColor: UIColor = UIColor(red: 54/255.0, green: 119/255.0, blue: 147/255.0, alpha: 0.5)
-    let enabledButtonTextColor: UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-    let disabledButtonTextColor: UIColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 0.4)
-    
-    // Outlets
+    //MARK: - Outlets
     //Buttons and labels
     @IBOutlet weak var questionField: UILabel!
     @IBOutlet weak var resultField: UILabel!
@@ -50,9 +29,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var lightningModeSwitchTitle: UILabel!
     @IBOutlet weak var lightningModeSwitchSubtitle: UILabel!
     @IBOutlet weak var lightningModeSwitchToggle: UISwitch!
-    var isLightningModeOn = true //tracks whether lighting mode is on. Defaults to true
     @IBOutlet weak var countDownLabel: UILabel! //count down timer label for lightning mode
-    let timeLimit = 15 //lightning mode time limit
     
     //Check box images to indicate correct answer
     @IBOutlet weak var checkAnswerButtonOne: UIImageView!
@@ -60,21 +37,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var checkAnswerButtonThree: UIImageView!
     @IBOutlet weak var checkAnswerButtonFour: UIImageView!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         //Load game sounds
-        loadGameSounds()
-        
+        gameSounds.loadGameSounds()
         //Set the button style to rounded for the whole game
         roundAllButtons()
-        
         //Set up the landing page
         setUpLandingPage()
     }
     
-    //HELPERS
+    //MARK: - Helpers
     
     //Round all the buttons
     func roundAllButtons(){
@@ -97,15 +70,6 @@ class ViewController: UIViewController {
         countDownLabel.isHidden = true
     }
     
-    //Load game sounds
-    func loadGameSounds() {
-        for gameSound in gameSounds {
-            let path = Bundle.main.path(forResource: gameSound.fileName, ofType: "m4a")
-            let soundUrl = URL(fileURLWithPath: path!)
-            AudioServicesCreateSystemSoundID(soundUrl as CFURL, &gameSound.systemSoundID)
-        }
-    }
-    
     //Show or hide lightning mode toggle
     func showLightningModeToggle(isAvailable: Bool) {
         if isAvailable == true {
@@ -123,13 +87,10 @@ class ViewController: UIViewController {
     
     //Start a new game
     func startNewGame(){
-        currentGame += 1
         //Hide the lightning mode switch
         showLightningModeToggle(isAvailable: false)
         //Play the start game sound
         gameStartSound.playGameSound()
-        //Reset number of correct answers
-        correctAnswers = 0
         //Update progress button title
         progressButton.setTitle("Next Question", for: UIControl.State())
         //Show question field and hide results field
@@ -147,11 +108,7 @@ class ViewController: UIViewController {
         hideAllCheckMarks()
         
         //Get a random question that hasn't been asked before
-        let randomIndex = GKRandomSource.sharedRandom().nextInt(upperBound: unaskedQuestionIndices.count-1)
-        let currentQuestionIndex = unaskedQuestionIndices[randomIndex]
-        currentQuestion = qAndASet[currentQuestionIndex]
-        //remove question index from the array of unasked questions
-        unaskedQuestionIndices.remove(at: randomIndex)
+        let currentQuestion = quizManager.returnRandomUnaskedQuestion()
         
         //Set up labels and buttons with q&a's and enabled state
         displayAnswerButtons()
@@ -167,39 +124,46 @@ class ViewController: UIViewController {
         
         //If in lightning mode, start a countdown timer that gives you 15 seconds to answer a question
         if isLightningModeOn == true {
-            setupCountDownTimer()
+            startCountDownTimer(withTimeLimitInSeconds: 15)
         }
     }
     
     //Sets up a timer
-    func setupCountDownTimer(){
-        let originalQuestion = self.currentQuestion
-        let originalGame = self.currentGame
+    func startCountDownTimer(withTimeLimitInSeconds timeLimit: Int){
+        let originalQuestion = quizManager.currentQuestion
+        var timeRemaining = timeLimit
+        countDownLabel.text = "\(timeRemaining) s"
+        countDownLabel.isHidden = false
+        timeRemaining -= 1
         
-        // Converts a onesecond delay to nanoseconds as signed 64 bit integer
-        let delay = Int64(NSEC_PER_SEC * UInt64(timeLimit))
-        // Calculates a time value to execute the method given current time and delay
-        
-        let dispatchTime = DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
-        
-        
-        // progresses the game at the dispatch time on the main queue
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            //Only execute the timer if on the same unanswered question when the time's up
-            if originalQuestion.question == self.currentQuestion.question && self.resultField.isHidden == true && originalGame == self.currentGame {
-                if self.unaskedQuestionIndices.count == 0 {
-                    //Game over
-                    self.displayScore()
-                } else {
-                    //Ran out of time but game continues.
-                    //Show results screen with no button selected.
-                    //Values for pressed button and answer are zero to represent nothing pressed
-                    self.setSelectedAnswerButtonState(exceptPressedButtonNumber: 0)
-                    self.checkAnswerAndSetResultField(forSelectedAnswerNumber: 0)
-                    
+        //Start the countdown timer, shown in the UI
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {timer in
+            //Continue countdown if there's time left, we're on the same question, and that question is unanswered
+            if timeRemaining > 0 && originalQuestion.question == quizManager.currentQuestion.question && self.progressButton.isHidden == true {
+                //Time's running out
+                self.countDownLabel.text = "\(timeRemaining) s"
+                timeRemaining -= 1
+            } else {
+                //Something's up... In any event, we need to stop the countdown and hide the label
+                timer.invalidate()
+                self.countDownLabel.isHidden = true
+                
+                //If it's the time that's up then...
+                if timeRemaining == 0 {
+                    if quizManager.isGameOver() {
+                        //Game over
+                        self.gameOver()
+                    } else {
+                        //Ran out of time but game continues.
+                        //Show results screen with no button selected.
+                        //Values for pressed button and answer are zero to represent nothing pressed
+                        self.setSelectedAnswerButtonState(exceptPressedButtonNumber: 0)
+                        self.checkAndDisplayResults(forSelectedAnswerNumber: 0)
+                    }
                 }
             }
         }
+        
     }
     
     //Hides all check marks which indicate correct answer on buttons
@@ -227,16 +191,16 @@ class ViewController: UIViewController {
             button.isEnabled = false
             button.backgroundColor = disabledButtonBackgroundColor
             
-            if buttonNumber == currentQuestion.correctAnswerNumber {
+            if buttonNumber == quizManager.currentQuestion.correctAnswerNumber {
                 allCheckMarks[buttonNumber - 1].isHidden = false
             }
             buttonNumber += 1
         }
         
         //Update state for progress button
-        //If no unasked questions remaining, show "Complete Quiz",
         progressButton.isHidden = false
-        if unaskedQuestionIndices.count == 0 {
+        //If no unasked questions remaining, change the text field to "Complete Quiz",
+        if quizManager.isGameOver() {
             //Game is over
             progressButton.setTitle("Complete Quiz",for: UIControl.State())
         }
@@ -276,14 +240,16 @@ class ViewController: UIViewController {
     }
     
     //Sets result field text and color according to whether answer is correct or question timed out. Play sounds accordingly.
-    func checkAnswerAndSetResultField(forSelectedAnswerNumber selectedAnswerNumber: Int) {
+    func checkAndDisplayResults(forSelectedAnswerNumber selectedAnswerNumber: Int) {
+        //Display results message
         resultField.isHidden = false
         
-        if currentQuestion.isAnswerCorrect(forSelectedAnswerNumber: selectedAnswerNumber) {
-            //answer is right
+        //Set the text
+        if quizManager.currentQuestion.isAnswerCorrect(forSelectedAnswerNumber: selectedAnswerNumber) {
+            //Answer is correct
+            quizManager.correctAnswers += 1
             resultField.textColor = correctColor
             resultField.text = "That is correct!"
-            correctAnswers += 1
             correctAnswerSound.playGameSound()
         } else {
             //answer is wrong or timed out
@@ -298,7 +264,7 @@ class ViewController: UIViewController {
         }
     }
     
-    //Shows the score when the quiz is complete and offers button to play again
+    //Shows the score when the quiz is complete, offers button to play again, and displays switch for lighting mode
     func displayScore() {
         //Play game end sound
         gameEndSound.playGameSound()
@@ -313,14 +279,13 @@ class ViewController: UIViewController {
         
         //Display score
         resultField.isHidden = false
-        if correctAnswers * 2 >= totalQuestions {
-            //If you got half or more right
+        if quizManager.gotMoreThanHalfCorrect() {
             questionField.text = "Way to go! You got..."
-            resultField.text = "\(correctAnswers) of \(totalQuestions) correct!"
+            resultField.text = quizManager.returnScoreString()
             resultField.textColor = correctColor
         } else {
             questionField.text = "Better luck next time! You got..."
-            resultField.text = "\(correctAnswers) of \(totalQuestions) correct."
+            resultField.text = quizManager.returnScoreString()
             resultField.textColor = wrongColor
         }
         
@@ -328,45 +293,52 @@ class ViewController: UIViewController {
         showLightningModeToggle(isAvailable: true)
     }
     
-    //ACTIONS
+    //Shows score and resets quiz questions
+    func gameOver(){
+        displayScore()
+        quizManager.resetQuiz()
+    }
     
-    //Check answer when button selected and show the result
+    //MARK: - Actions
+    
+    //Check answer for the given selected answer button and show the result
     @IBAction func checkAnswer(_ sender: UIButton) {
+        //Hide countdown timer
+        countDownLabel.isHidden = true
+        
         //Gets the number corresponding to the button pressed
         let selectedAnswerNumber = getButtonNumber(forButtonPressed: sender)
-        
+
         //Changes buttons for the selected answer state and reveals answer
         setSelectedAnswerButtonState(exceptPressedButtonNumber: selectedAnswerNumber)
         
         //Updates the text in the result field
-        checkAnswerAndSetResultField(forSelectedAnswerNumber: selectedAnswerNumber)
+        checkAndDisplayResults(forSelectedAnswerNumber: selectedAnswerNumber)
     }
     
     //Progresses through the quiz when progress button pressed
-    //Next state determined by number of unasked questions remaining
+    //Next state determined by state of game: over, beginning, or in progress
     @IBAction func progressThroughQuiz() {
-        let questionsRemaining = unaskedQuestionIndices.count
-        if questionsRemaining == 0 {
-        //Game is over. Show score
-            unaskedQuestionIndices = Array(0...(qAndASet.count - 1))
-            displayScore()
-            //Reset unasked question indices
+        if quizManager.isGameOver() {
+            //Game is over.
+            //Reset unasked question indices and number of correct answers
+            gameOver()
+        } else if quizManager.isGameBeginning() {
+            //Game is beginning. Display first question of a new game
+            startNewGame()
         } else {
-        //Show next question
-            if questionsRemaining == totalQuestions {
-            //Start a new game
-                startNewGame()
-            }
+            //Game in progress. Display next question of a continued game
             displayQuestion()
         }
     }
     
+    //Lighting mode switch toggled
     @IBAction func lightningModeToggled() {
-        //Switches the state of the switch and whether lightning mode is on
+        //Switches the state whether lighting mode is on
         isLightningModeOn = !isLightningModeOn
+        //Switches the state of the UI button accordingly
         lightningModeSwitchToggle.isOn = isLightningModeOn
     }
-    
     
 }
 
