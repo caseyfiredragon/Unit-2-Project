@@ -6,7 +6,7 @@
 //  Copyright © 2019 Casey Conway. All rights reserved.
 //
 
-//This file includes all the color settings for the app
+//ABOUT - This file includes all the color settings for the app
 
 import UIKit
 

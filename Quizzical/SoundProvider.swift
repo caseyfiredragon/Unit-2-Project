@@ -6,6 +6,8 @@
 //  Copyright © 2019 Casey Conway. All rights reserved.
 //
 
+//ABOUT - This file models the game sounds
+
 import AudioToolbox
 
 //Custom type created to hold related values and functions for game sounds

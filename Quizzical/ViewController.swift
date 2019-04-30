@@ -19,10 +19,15 @@ class ViewController: UIViewController {
     //Buttons and labels
     @IBOutlet weak var questionField: UILabel!
     @IBOutlet weak var resultField: UILabel!
+    
     @IBOutlet weak var answerOneButton: UIButton!
     @IBOutlet weak var answerTwoButton: UIButton!
     @IBOutlet weak var answerThreeButton: UIButton!
     @IBOutlet weak var answerFourButton: UIButton!
+    //Collection of all the buttons:
+    @IBOutlet var answerButtons: [UIButton]!
+    
+    
     @IBOutlet weak var progressButton: UIButton!
     
     //Lighting mode components
@@ -36,6 +41,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var checkAnswerButtonTwo: UIImageView!
     @IBOutlet weak var checkAnswerButtonThree: UIImageView!
     @IBOutlet weak var checkAnswerButtonFour: UIImageView!
+    //Collection of all the check icons
+    @IBOutlet var checkIconsForAnswerButtons: [UIImageView]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +58,7 @@ class ViewController: UIViewController {
     
     //Round all the buttons
     func roundAllButtons(){
-        let allButtons: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton, progressButton]
-        for button in allButtons {
+        for button in answerButtons {
             button.layer.cornerRadius = 8.0
         }
     }
@@ -163,26 +169,24 @@ class ViewController: UIViewController {
                 }
             }
         }
-        
     }
     
     //Hides all check marks which indicate correct answer on buttons
     func hideAllCheckMarks(){
-        let allCheckMarks: [UIImageView] = [checkAnswerButtonOne, checkAnswerButtonTwo, checkAnswerButtonThree, checkAnswerButtonFour]
-        for checkMark in allCheckMarks {
+        for checkMark in checkIconsForAnswerButtons {
             checkMark.isHidden = true
         }
     }
     
     //Changes buttons for the selected answer state and reveals answer
     func setSelectedAnswerButtonState(exceptPressedButtonNumber pressedButtonNumber: Int){
-        let answerButtons: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton]
+        let answerButtonsInOrder: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton]
         let allCheckMarks: [UIImageView] = [checkAnswerButtonOne, checkAnswerButtonTwo, checkAnswerButtonThree, checkAnswerButtonFour]
         
         //Update state for answer buttons
         var buttonNumber = 1 //counter
         //if pressedButtonNumber == 0 then no buttons will appear selected
-        for button in answerButtons {
+        for button in answerButtonsInOrder {
             if buttonNumber != pressedButtonNumber {
                 button.setTitleColor(disabledButtonTextColor, for: UIControl.State())
             } else {
@@ -208,7 +212,6 @@ class ViewController: UIViewController {
     
     //Displays the answer buttons in a ready-to-be-selected state
     func displayAnswerButtons(){
-        let answerButtons: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton]
         for button in answerButtons {
             button.isEnabled = true
             button.setTitleColor(enabledButtonTextColor, for: UIControl.State())
@@ -219,10 +222,10 @@ class ViewController: UIViewController {
     
     //Returns the answer number given button pressed, starting at 1
     func getButtonNumber(forButtonPressed buttonPressed: UIButton) -> Int {
-        let answerButtons: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton]
+        let answerButtonsInOrder: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton]
         var answerNumber = 0
         var n = 1
-        for button in answerButtons {
+        for button in answerButtonsInOrder {
             if button == buttonPressed {
                 answerNumber = n
             }
@@ -233,7 +236,6 @@ class ViewController: UIViewController {
     
     //Hides all the answer buttons
     func hideAllAnswerButtons(){
-        let answerButtons: [UIButton] = [answerOneButton, answerTwoButton, answerThreeButton, answerFourButton]
         for button in answerButtons {
             button.isHidden = true
         }

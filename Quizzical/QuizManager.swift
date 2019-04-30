@@ -5,6 +5,9 @@
 //  Created by Casey Conway on 4/29/19.
 //  Copyright © 2019 Casey Conway. All rights reserved.
 //
+
+//ABOUT - This file includes all the logic for managing and providing the quiz questions and answers
+
 import GameKit
 
 class QuizManager {

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Casey Conway. All rights reserved.
 //
 
+//ABOUT - This file contains the question and answer data and struct
+
 //Stores the questions and answers for a given question and provides functions to access and check it
 struct QAndA {
     let question: String

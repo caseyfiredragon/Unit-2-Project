@@ -42,7 +42,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xbg-lt-hbK"/>
+                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BXg-g1-7Cs"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61o-NR-aUb">
@@ -57,7 +57,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Y6Q-Pv-fhS"/>
+                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Eae-Bv-1WO"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJZ-Ss-HGf">
@@ -72,7 +72,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="oXg-Vj-P0d"/>
+                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kyt-mO-JIr"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="niK-ow-Gb6">
@@ -87,7 +87,7 @@
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="C8I-FY-xVd"/>
+                                    <action selector="checkAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dMf-b3-1MN"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="white_check" translatesAutoresizingMaskIntoConstraints="NO" id="QoM-lT-NeD">
@@ -205,14 +205,14 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="answerFourButton" destination="uJZ-Ss-HGf" id="c8j-FU-VqA"/>
-                        <outlet property="answerOneButton" destination="niK-ow-Gb6" id="bOB-Kp-hjQ"/>
-                        <outlet property="answerThreeButton" destination="61o-NR-aUb" id="oLf-Qk-CU2"/>
-                        <outlet property="answerTwoButton" destination="DO2-aA-HpF" id="a5v-yf-fxG"/>
-                        <outlet property="checkAnswerButtonFour" destination="Hn7-pE-rxJ" id="ai3-lD-Jbz"/>
-                        <outlet property="checkAnswerButtonOne" destination="QoM-lT-NeD" id="KYH-58-vfu"/>
-                        <outlet property="checkAnswerButtonThree" destination="l7g-kV-xQy" id="Nrv-5b-hPE"/>
-                        <outlet property="checkAnswerButtonTwo" destination="fzc-8M-daO" id="ySe-0s-8Rl"/>
+                        <outlet property="answerFourButton" destination="uJZ-Ss-HGf" id="clM-wn-bbu"/>
+                        <outlet property="answerOneButton" destination="niK-ow-Gb6" id="Fqm-FG-GVI"/>
+                        <outlet property="answerThreeButton" destination="61o-NR-aUb" id="Ckr-bS-KZc"/>
+                        <outlet property="answerTwoButton" destination="DO2-aA-HpF" id="rZa-Bm-R3s"/>
+                        <outlet property="checkAnswerButtonFour" destination="Hn7-pE-rxJ" id="Hh2-Vb-7Fd"/>
+                        <outlet property="checkAnswerButtonOne" destination="QoM-lT-NeD" id="9Dd-BR-VvZ"/>
+                        <outlet property="checkAnswerButtonThree" destination="l7g-kV-xQy" id="6VH-oq-d0O"/>
+                        <outlet property="checkAnswerButtonTwo" destination="fzc-8M-daO" id="XjQ-HS-7f5"/>
                         <outlet property="countDownLabel" destination="M8f-cP-o4S" id="Kqq-vr-ght"/>
                         <outlet property="lightningModeSwitchSubtitle" destination="a6a-DZ-N3J" id="Ffj-hI-tLb"/>
                         <outlet property="lightningModeSwitchTitle" destination="9yb-MH-cHU" id="eyS-oF-93n"/>
@@ -220,6 +220,14 @@
                         <outlet property="progressButton" destination="f3X-H6-vn4" id="8NQ-y9-5ZQ"/>
                         <outlet property="questionField" destination="VsS-eL-jJE" id="jq7-Xr-y30"/>
                         <outlet property="resultField" destination="ayc-hd-Z6M" id="lw4-6A-cfE"/>
+                        <outletCollection property="answerButtons" destination="niK-ow-Gb6" collectionClass="NSMutableArray" id="nsl-VD-yxQ"/>
+                        <outletCollection property="answerButtons" destination="DO2-aA-HpF" collectionClass="NSMutableArray" id="LZX-7H-Aba"/>
+                        <outletCollection property="answerButtons" destination="61o-NR-aUb" collectionClass="NSMutableArray" id="0fV-AZ-r6J"/>
+                        <outletCollection property="answerButtons" destination="uJZ-Ss-HGf" collectionClass="NSMutableArray" id="0Nw-J7-wkq"/>
+                        <outletCollection property="checkIconsForAnswerButtons" destination="QoM-lT-NeD" collectionClass="NSMutableArray" id="Etw-Fa-Ahf"/>
+                        <outletCollection property="checkIconsForAnswerButtons" destination="fzc-8M-daO" collectionClass="NSMutableArray" id="YXY-bI-xb7"/>
+                        <outletCollection property="checkIconsForAnswerButtons" destination="l7g-kV-xQy" collectionClass="NSMutableArray" id="rbo-kK-fUo"/>
+                        <outletCollection property="checkIconsForAnswerButtons" destination="Hn7-pE-rxJ" collectionClass="NSMutableArray" id="Zib-OP-ghZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
