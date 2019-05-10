@@ -14,6 +14,10 @@ class ViewController: UIViewController {
 
     //MARK: - Properties
     var isLightningModeOn = true //tracks whether lighting mode is on. Defaults to true
+
+    //Holds quiz data and rules
+    let quizManager = QuizManager()
+    let gameSounds = GameSounds()
     
     //MARK: - Outlets
     //Buttons and labels
@@ -61,11 +65,12 @@ class ViewController: UIViewController {
         for button in answerButtons {
             button.layer.cornerRadius = 8.0
         }
+        progressButton.layer.cornerRadius = 8.0
     }
     
     //Set up the landing page of the app. Users only see this once when opening.
     func setUpLandingPage(){
-        gameLoadSound.playGameSound()
+        GameSounds.gameLoadSound.playGameSound()
         questionField.isHidden = true
         resultField.text = "Welcome to Quizzical!"
         resultField.isHidden = false
@@ -96,7 +101,7 @@ class ViewController: UIViewController {
         //Hide the lightning mode switch
         showLightningModeToggle(isAvailable: false)
         //Play the start game sound
-        gameStartSound.playGameSound()
+        GameSounds.gameStartSound.playGameSound()
         //Update progress button title
         progressButton.setTitle("Next Question", for: UIControl.State())
         //Show question field and hide results field
@@ -145,7 +150,7 @@ class ViewController: UIViewController {
         //Start the countdown timer, shown in the UI
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) {timer in
             //Continue countdown if there's time left, we're on the same question, and that question is unanswered
-            if timeRemaining > 0 && originalQuestion.question == quizManager.currentQuestion.question && self.progressButton.isHidden == true {
+            if timeRemaining > 0 && originalQuestion.question == self.quizManager.currentQuestion.question && self.progressButton.isHidden == true {
                 //Time's running out
                 self.countDownLabel.text = "\(timeRemaining) s"
                 timeRemaining -= 1
@@ -156,7 +161,7 @@ class ViewController: UIViewController {
                 
                 //If it's the time that's up then...
                 if timeRemaining == 0 {
-                    if quizManager.isGameOver() {
+                    if self.quizManager.isGameOver() {
                         //Game over
                         self.gameOver()
                     } else {
@@ -188,12 +193,12 @@ class ViewController: UIViewController {
         //if pressedButtonNumber == 0 then no buttons will appear selected
         for button in answerButtonsInOrder {
             if buttonNumber != pressedButtonNumber {
-                button.setTitleColor(disabledButtonTextColor, for: UIControl.State())
+                button.setTitleColor(StyleManager.disabledButtonTextColor, for: UIControl.State())
             } else {
                 button.setTitleColor(.white, for: UIControl.State())
             }
             button.isEnabled = false
-            button.backgroundColor = disabledButtonBackgroundColor
+            button.backgroundColor = StyleManager.disabledButtonBackgroundColor
             
             if buttonNumber == quizManager.currentQuestion.correctAnswerNumber {
                 allCheckMarks[buttonNumber - 1].isHidden = false
@@ -214,8 +219,8 @@ class ViewController: UIViewController {
     func displayAnswerButtons(){
         for button in answerButtons {
             button.isEnabled = true
-            button.setTitleColor(enabledButtonTextColor, for: UIControl.State())
-            button.backgroundColor = enabledButtonBackgroundColor
+            button.setTitleColor(StyleManager.enabledButtonTextColor, for: UIControl.State())
+            button.backgroundColor = StyleManager.enabledButtonBackgroundColor
             button.isHidden = false
         }
     }
@@ -250,18 +255,18 @@ class ViewController: UIViewController {
         if quizManager.currentQuestion.isAnswerCorrect(forSelectedAnswerNumber: selectedAnswerNumber) {
             //Answer is correct
             quizManager.correctAnswers += 1
-            resultField.textColor = correctColor
+            resultField.textColor = StyleManager.correctColor
             resultField.text = "That is correct!"
-            correctAnswerSound.playGameSound()
+            GameSounds.correctAnswerSound.playGameSound()
         } else {
             //answer is wrong or timed out
-            resultField.textColor = wrongColor
+            resultField.textColor = StyleManager.wrongColor
             if selectedAnswerNumber == 0 {
                 resultField.text = "Time's up!"
-                timesUpSound.playGameSound()
+                GameSounds.timesUpSound.playGameSound()
             } else {
                 resultField.text = "Sorry, that's wrong."
-                incorrectAnswerSound.playGameSound()
+                GameSounds.incorrectAnswerSound.playGameSound()
             }
         }
     }
@@ -269,7 +274,7 @@ class ViewController: UIViewController {
     //Shows the score when the quiz is complete, offers button to play again, and displays switch for lighting mode
     func displayScore() {
         //Play game end sound
-        gameEndSound.playGameSound()
+        GameSounds.gameEndSound.playGameSound()
         
         //Hide the answer buttons
         hideAllAnswerButtons()
@@ -284,11 +289,11 @@ class ViewController: UIViewController {
         if quizManager.gotMoreThanHalfCorrect() {
             questionField.text = "Way to go! You got..."
             resultField.text = quizManager.returnScoreString()
-            resultField.textColor = correctColor
+            resultField.textColor = StyleManager.correctColor
         } else {
             questionField.text = "Better luck next time! You got..."
             resultField.text = quizManager.returnScoreString()
-            resultField.textColor = wrongColor
+            resultField.textColor = StyleManager.wrongColor
         }
         
         //Show lighting mode switch

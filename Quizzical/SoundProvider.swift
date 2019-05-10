@@ -32,20 +32,30 @@ class GameSound {
     }
 }
 
-//Declare properties of custom type GameSound
-let gameLoadSound = GameSound(fileName: "GameLoadSound")
-let gameStartSound = GameSound(fileName: "GameStartSound")
-let gameEndSound = GameSound(fileName: "GameEndSound")
-let timesUpSound = GameSound(fileName: "TimesUpSound")
-let incorrectAnswerSound = GameSound(fileName: "IncorrectAnswerSound")
-let correctAnswerSound = GameSound(fileName: "CorrectAnswerSound")
+struct GameSoundSet {
+    //Declare properties of custom type GameSound
+    static let gameLoadSound = GameSound(fileName: "GameLoadSound")
+    static let gameStartSound = GameSound(fileName: "GameStartSound")
+    static let gameEndSound = GameSound(fileName: "GameEndSound")
+    static let timesUpSound = GameSound(fileName: "TimesUpSound")
+    static let incorrectAnswerSound = GameSound(fileName: "IncorrectAnswerSound")
+    static let correctAnswerSound = GameSound(fileName: "CorrectAnswerSound")
+    
+    //Organize all the sounds in an array
+    static let gameSoundSet: [GameSound] = [gameLoadSound,gameStartSound,gameEndSound,timesUpSound,incorrectAnswerSound,correctAnswerSound]
+}
 
 class GameSounds {
-    let gameSoundSet: [GameSound]
+    //Declare properties of custom type GameSound
+    static let gameLoadSound = GameSound(fileName: "GameLoadSound")
+    static let gameStartSound = GameSound(fileName: "GameStartSound")
+    static let gameEndSound = GameSound(fileName: "GameEndSound")
+    static let timesUpSound = GameSound(fileName: "TimesUpSound")
+    static let incorrectAnswerSound = GameSound(fileName: "IncorrectAnswerSound")
+    static let correctAnswerSound = GameSound(fileName: "CorrectAnswerSound")
     
-    init(gameSoundSet: [GameSound]){
-        self.gameSoundSet = gameSoundSet
-    }
+    //Organize all the sounds in an array
+    let gameSoundSet: [GameSound] = [gameLoadSound,gameStartSound,gameEndSound,timesUpSound,incorrectAnswerSound,correctAnswerSound]
     
     //Load game sounds
     func loadGameSounds() {
@@ -57,5 +67,3 @@ class GameSounds {
     }
 }
 
-//Organize all the sounds in an array
-let gameSounds = GameSounds(gameSoundSet:[gameLoadSound,gameStartSound,gameEndSound,timesUpSound,incorrectAnswerSound,correctAnswerSound])

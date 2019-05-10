@@ -11,9 +11,23 @@
 import GameKit
 
 class QuizManager {
+    //questionAndAnswerSet stores all the Q&A data
+    //Answer numbers start at 1 which corresponds to array position zero in "answers"
+    //This set has some answer options removed so some questions only have three answer options
+    let qAndASet = [QAndA(question: "This was the only US President to serve more than two consecutive terms.", answers: [ "George Washington", "Franklin D. Roosevelt", "Woodrow Wilson", "Andrew Jackson"], correctAnswerNumber: 2),
+                                QAndA(question: "Which of the following countries has the most residents?", answers: [ "Nigeria", "Russia", "Iran"], correctAnswerNumber: 1),
+                                QAndA(question: "In what year was the United Nations founded?", answers: [ "1918", "1919", "1945", "1954"], correctAnswerNumber: 3),
+                                QAndA(question: "The Titanic departed from the United Kingdom, where was it supposed to arrive?", answers: [ "Paris", "Washington D.C.", "New York City", "Boston"], correctAnswerNumber: 3),
+                                QAndA(question: "Which nation produces the most oil?", answers: [ "Iran", "Iraq", "Brazil", "Canada"], correctAnswerNumber: 4),
+                                QAndA(question: "Which country has most recently won consecutive World Cups in Soccer?", answers: [ "Italy", "Brazil", "Argentina", "Spain"], correctAnswerNumber: 2),
+                                QAndA(question: "Which of the following rivers is longest?", answers: [ "Yangtze", "Mississippi", "Congo"], correctAnswerNumber: 2),
+                                QAndA(question: "Which city is the oldest?", answers: [ "Mexico City", "Cape Town", "San Juan"], correctAnswerNumber: 1),
+                                QAndA(question: "Which country was the first to allow women to vote in national elections?", answers: [ "Poland", "United States", "Sweden"], correctAnswerNumber: 1),
+                                QAndA(question: "Which of these countries won the most medals in the 2012 Summer Games?", answers: [ "France", "Germany", "Japan", "Great Britian"], correctAnswerNumber: 4)]
+    
+    
     var correctAnswers = 0 //Keeps track of correct answers
     
-    let qAndASet: [QAndA]
     //Array used to track what questions remain unasked...
     //by storing the index of their position in the qAndASet array.
     //Index values are removed from this array when a question is asked.
@@ -21,8 +35,7 @@ class QuizManager {
     var currentQuestion: QAndA //Keeps track of the current question
     let totalQuestions: Int
    
-    init (qAndASet: [QAndA]){
-        self.qAndASet = qAndASet
+    init (){
         self.unaskedQuestionIndices = Array(0...(qAndASet.count - 1))
         self.currentQuestion = qAndASet[0]
         self.totalQuestions = qAndASet.count //Total number of questions
@@ -67,4 +80,3 @@ class QuizManager {
     
 }
 
-let quizManager = QuizManager(qAndASet: questionAndAnswerSet)
